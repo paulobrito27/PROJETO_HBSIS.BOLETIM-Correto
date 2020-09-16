@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
 {
-    public partial class gsjgfaf : Migration
+    public partial class primeiro : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -32,7 +32,7 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(nullable: true),
-                    Situação = table.Column<int>(nullable: false)
+                    Situacao = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,8 +45,8 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Descricao = table.Column<string>(nullable: true),
                     Nome = table.Column<string>(nullable: true),
+                    Descricao = table.Column<string>(nullable: true),
                     DataCadastro = table.Column<DateTime>(nullable: false),
                     Situacao = table.Column<int>(nullable: false),
                     Nota = table.Column<double>(nullable: false)

@@ -36,10 +36,14 @@ namespace PROJETO_HBSIS.BOLETIM.VALITATOR.Validation
                 validador.Erros.Add("Campo nome só poder conter letras!");
             }
 
-            //Valida Materia ativa
-            
+            if (_curso.Situacao != MODELS.Enum.StatusCursoEnum.ATIVO && _curso.Situacao != MODELS.Enum.StatusCursoEnum.CANCELADO && _curso.Situacao != MODELS.Enum.StatusCursoEnum.PREVISTO)
+            {
+                validador.IsValid = false;
+                validador.Erros.Add("Curso deve constar como 'Ativa' ou 'Cancelado ou 'Previsto'!");
+            }
 
-                return validador;
+
+            return validador;
         }
 
         private bool ValidaSoLetras(Curso curso)

@@ -10,7 +10,6 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Types
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Nome).IsRequired().HasMaxLength(30);
-            builder.Property(x => x.Situação).IsRequired();
             builder.HasMany(q => q.Alunos).WithOne().HasForeignKey(q => q.IdCurso);
 
         }

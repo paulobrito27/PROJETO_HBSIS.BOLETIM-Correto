@@ -66,8 +66,7 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
                     result.Message.Add($"O nome {materia.Nome} já esta cadastrado");
                     result.Status = HttpStatusCode.BadRequest;
                     return Ok(result);
-                }
-                
+                }   
             }
 
             try

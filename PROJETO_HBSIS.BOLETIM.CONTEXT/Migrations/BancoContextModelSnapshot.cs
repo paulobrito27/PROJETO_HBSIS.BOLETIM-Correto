@@ -127,7 +127,7 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Situação")
+                    b.Property<int>("Situacao")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

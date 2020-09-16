@@ -10,8 +10,8 @@ using PROJETO_HBSIS.BOLETIM.CONTEXT;
 namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
 {
     [DbContext(typeof(BancoContext))]
-    [Migration("20200916175146_gsjgfaf")]
-    partial class gsjgfaf
+    [Migration("20200916224310_primeiro")]
+    partial class primeiro
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,7 +129,7 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Situação")
+                    b.Property<int>("Situacao")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
