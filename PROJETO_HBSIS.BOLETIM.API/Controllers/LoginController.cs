@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PROJETO_HBSIS.BOLETIM.API.Results;
 using PROJETO_HBSIS.BOLETIM.CONTEXT;
 using PROJETO_HBSIS.BOLETIM.MODELS;
-using System;
-using System.Linq;
+using System.Net;
 
 namespace PROJETO_HBSIS.BOLETIM.API.Controllers
 {
@@ -20,6 +20,8 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
         [HttpPost]
         public ActionResult Logar(Usuario usuario)
         {
+            var result = new PadraoResult<Usuario>();
+
             using (_banco)
             {
                 //pesquisa dentro de administradores
@@ -27,7 +29,10 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
                 {
                     if (user.Login == usuario.Login && user.Password == usuario.Password)
                     {
-                        return Ok(user);
+                        result.Data.Add(user);
+                        result.Error = false;
+                        result.Status = HttpStatusCode.OK;
+                        return Ok(result);
                     }
                 }
                 //pesquisa dentro de Professores
@@ -35,7 +40,10 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
                 {
                     if (user.Login == usuario.Login && user.Password == usuario.Password)
                     {
-                        return Ok(user);
+                        result.Data.Add(user);
+                        result.Error = false;
+                        result.Status = HttpStatusCode.OK;
+                        return Ok(result);
                     }
                 }
                 //pesquisa dentro de Alunos
@@ -43,11 +51,18 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
                 {
                     if (user.Login == usuario.Login && user.Password == usuario.Password)
                     {
-                        return Ok(user);
+                        result.Data.Add(user);
+                        result.Error = false;
+                        result.Status = HttpStatusCode.OK;
+                        return Ok(result);
                     }
                 }
 
-                return BadRequest("Usuario não cadastrado");
+                
+                result.Error = true;
+                result.Status = HttpStatusCode.NotFound;
+                result.Message.Add ("Usuario não cadastrado");
+                return Ok(result);
             }
         }
 
