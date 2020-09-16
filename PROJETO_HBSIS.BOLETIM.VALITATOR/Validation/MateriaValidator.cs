@@ -62,6 +62,13 @@ namespace PROJETO_HBSIS.BOLETIM.VALITATOR.Validation
                 validador.Erros.Add($"Data informada não pode ser superior a data atual {DateTime.Now}!");
             }
 
+
+            if(_materia.Situacao != MODELS.Enum.StatusMateriaEnum.ATIVO && _materia.Situacao != MODELS.Enum.StatusMateriaEnum.INATIVO)
+            {
+                validador.IsValid = false;
+                validador.Erros.Add("Matéria deve constar como 'Ativa' ou 'Inativa'!");
+            }
+
             return validador;
         }
 
