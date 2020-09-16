@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PROJETO_HBSIS.BOLETIM.CONTEXT\PROJETO_HBSIS.BOLETIM.CONTEXT.csproj" />
+    <ProjectReference Include="..\PROJETO_HBSIS.BOLETIM.MODELS\PROJETO_HBSIS.BOLETIM.MODELS.csproj" />
+    <ProjectReference Include="..\PROJETO_HBSIS.BOLETIM.VALITATOR\PROJETO_HBSIS.BOLETIM.VALITATOR.csproj" />
+  </ItemGroup>
+
+
+</Project>
