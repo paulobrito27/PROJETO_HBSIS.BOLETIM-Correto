@@ -11,7 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PROJETO_HBSIS.BOLETIM.CONTEXT\PROJETO_HBSIS.BOLETIM.CONTEXT.csproj" />
     <ProjectReference Include="..\PROJETO_HBSIS.BOLETIM.MODELS\PROJETO_HBSIS.BOLETIM.MODELS.csproj" />
+    <ProjectReference Include="..\PROJETO_HBSIS.BOLETIM.VALITATOR\PROJETO_HBSIS.BOLETIM.VALITATOR.csproj" />
   </ItemGroup>
 
 </Project>

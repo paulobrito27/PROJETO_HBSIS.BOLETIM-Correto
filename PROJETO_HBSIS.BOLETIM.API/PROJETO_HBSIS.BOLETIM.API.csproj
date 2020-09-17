@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="9.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
@@ -17,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PROJETO_HBSIS.BOLETIM.CONTEXT\PROJETO_HBSIS.BOLETIM.CONTEXT.csproj" />
     <ProjectReference Include="..\PROJETO_HBSIS.BOLETIM.MODELS\PROJETO_HBSIS.BOLETIM.MODELS.csproj" />
+    <ProjectReference Include="..\PROJETO_HBSIS.BOLETIM.NEGOCIO\PROJETO_HBSIS.BOLETIM.NEGOCIO.csproj" />
     <ProjectReference Include="..\PROJETO_HBSIS.BOLETIM.VALITATOR\PROJETO_HBSIS.BOLETIM.VALITATOR.csproj" />
   </ItemGroup>
 

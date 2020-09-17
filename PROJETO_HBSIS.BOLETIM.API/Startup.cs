@@ -4,10 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
-using PROJETO_HBSIS.BOLETIM.CONTEXT;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using PROJETO_HBSIS.BOLETIM.NEGOCIO;
 
 namespace PROJETO_HBSIS.BOLETIM.API
 {
@@ -24,7 +23,7 @@ namespace PROJETO_HBSIS.BOLETIM.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddMvc().AddNewtonsoftJson(q=>q.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddMvc().AddNewtonsoftJson(q => q.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             //SWAGGER----------------------------------
             services.AddSwaggerGen(c =>
@@ -37,10 +36,10 @@ namespace PROJETO_HBSIS.BOLETIM.API
             });
             //------------------------------------------
 
-            services.AddDbContext<BancoContext>(options =>
-        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            /* services.AddDbContext<BancoContext>(options =>
+         options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));       ====>  Usado sem a injeção de dependencia**/
 
-
+            services.Injetar(Configuration.GetConnectionString("DefaultConnection"));
 
         }
 
