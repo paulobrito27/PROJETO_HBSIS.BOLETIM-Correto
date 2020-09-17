@@ -13,7 +13,7 @@ namespace PROJETO_HBSIS.BOLETIM.MODELS
         public DateTime DataCadastro { get; set; }
         public StatusMateriaEnum Situacao { get; set; }
         public double Nota { get; set; }
-        public ICollection<MateriaCurso> MateriaCursos{ get; set; } = new HashSet<MateriaCurso>();
-        public ICollection<ProfessorMateria> ProfessorMaterias { get; set; } = new HashSet<ProfessorMateria>();
+        public virtual ICollection<MateriaCurso> Cursos { get; set; } = new HashSet<MateriaCurso>();
+        public   ICollection<ProfessorMateria> Professores { get; set; } = new HashSet<ProfessorMateria>();
     }
 }

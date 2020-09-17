@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
 {
-    public partial class primeiro : Migration
+    public partial class nova : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +24,7 @@ namespace PROJETO_HBSIS.BOLETIM.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
+            services.AddMvc().AddNewtonsoftJson(q=>q.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             //SWAGGER----------------------------------
             services.AddSwaggerGen(c =>
@@ -38,6 +39,8 @@ namespace PROJETO_HBSIS.BOLETIM.API
 
             services.AddDbContext<BancoContext>(options =>
         options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+
 
         }
 

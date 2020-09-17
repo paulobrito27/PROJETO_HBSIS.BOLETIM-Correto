@@ -20,6 +20,10 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT
             optionsBuilder.UseSqlServer("Data Source=NT-04777\\SQLEXPRESS;Initial Catalog=BancoBoletim;Integrated Security=True;MultipleActiveResultSets=True");
         }
 
+
+
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // modelBuilder.ApplyConfigurationsFromAssembly(typeof(BancoContext).Assembly);

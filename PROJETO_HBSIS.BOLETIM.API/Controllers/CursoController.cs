@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PROJETO_HBSIS.BOLETIM.API.Results;
 using PROJETO_HBSIS.BOLETIM.CONTEXT;
 using PROJETO_HBSIS.BOLETIM.MODELS;
@@ -30,7 +31,7 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
                 {
                     result.Error = false;
                     result.Status = HttpStatusCode.OK;
-                    result.Data = _banco.Cursos.ToList();
+                    result.Data = _banco.Cursos.Include(q=>q.Materias).ToList();
                     return Ok(result);
                 }
             }
@@ -41,6 +42,32 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
                 return BadRequest(result);
             }
         }
+
+        [HttpPost]
+        [Route("AddMateria")]
+        public ActionResult AdicionarMaterias( string nome_curso, string nome_materia)
+        {
+            var result = new PadraoResult<Curso>();
+
+
+            var cursos = _banco.Cursos.ToList();
+            var materias = _banco.Materias.ToList();
+
+            var curso = cursos.Where(q => q.Nome.ToLower() == nome_curso.ToLower()).Select(q => q).FirstOrDefault();
+            var materia = materias.Where(q => q.Nome.ToLower() == nome_materia.ToLower()).Select(q => q).FirstOrDefault();
+            curso.Materias.Add(new MateriaCurso()
+                {
+                    Materia = materia,
+                    Curso = curso
+                });
+            
+            _banco.SaveChanges();
+
+            result.Data = cursos;
+            return Ok(result);
+        }
+
+
 
 
 
@@ -93,7 +120,12 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
         }
 
 
+
+
+
+
+
     }
 
-       
+
 }
