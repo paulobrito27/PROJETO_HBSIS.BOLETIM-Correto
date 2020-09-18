@@ -6,7 +6,6 @@ using PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces;
 using PROJETO_HBSIS.BOLETIM.NEGOCIO.Results;
 using PROJETO_HBSIS.BOLETIM.VALITATOR.Validation;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
@@ -81,6 +80,52 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
             }
 
 
+        }
+
+        public PadraoResult<Aluno> CadastrarAluno(Aluno aluno)
+        {
+            var validator = new AlunoValidator();
+            var valida = validator.Valida(aluno);
+            var result = new PadraoResult<Aluno>();
+
+            if (!valida.IsValid)
+            {
+                result.Error = true;
+                result.Message = valida.Erros;
+                result.Status = HttpStatusCode.BadRequest;
+                return result;
+            }
+            aluno.Cpf = validator.FormataCPF(aluno);
+            validator.SenhaLoginInicial(aluno);
+            try
+            {
+                using (db)
+                {
+                    foreach (var item in db.Alunos)
+                    {
+                        if (item.Cpf == aluno.Cpf)
+                        {
+                            result.Error = true;
+                            result.Message.Add($"O nome {aluno.Nome} com CPF {aluno.Cpf} já esta cadastrado");
+                            result.Status = HttpStatusCode.BadRequest;
+                            return result;
+                        }
+                    }
+
+                    db.Alunos.Add(aluno);
+                    db.SaveChanges();
+                    result.Error = false;
+                    result.Status = HttpStatusCode.OK;
+                    result.Data = db.Alunos.ToList();
+                    return result;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error = true;
+                result.Message.Add(e.Message);
+                return result;
+            }
         }
 
         public PadraoResult<Curso> CadastrarCurso(Curso curso)
@@ -218,6 +263,29 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
                 return result;
             }
 
+        }
+
+        public PadraoResult<Aluno> ListarAlunos()
+        {
+            var result = new PadraoResult<Aluno>();
+            try
+            {
+                using (db)
+                {
+                    result.Error = false;
+                    result.Message.Add("OK");
+                    result.Status = HttpStatusCode.OK;
+                    result.Data = db.Alunos.ToList();
+                    return result;
+                    //return db.Cursos.Select(s => new { CursoName = s.Nome, ListaMateria = s.Materias.Select(r => r.Materia.Nome).ToList() }).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error = true;
+                result.Message.Add(e.Message);
+                return result;
+            }
         }
 
         public PadraoResult<Curso> ListarCursos()

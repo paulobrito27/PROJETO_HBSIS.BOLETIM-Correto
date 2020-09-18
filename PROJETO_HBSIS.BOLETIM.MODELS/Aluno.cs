@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+using System;
 
 namespace PROJETO_HBSIS.BOLETIM.MODELS
 {
@@ -9,5 +7,6 @@ namespace PROJETO_HBSIS.BOLETIM.MODELS
     {
         public int IdCurso { get; set; }
         public virtual Curso Curso { get; set; }
+        public DateTime DataNascimento { get; set; }
     }
 }

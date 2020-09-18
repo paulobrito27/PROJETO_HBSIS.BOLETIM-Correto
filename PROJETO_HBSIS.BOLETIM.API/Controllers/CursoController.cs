@@ -1,15 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PROJETO_HBSIS.BOLETIM.API.Results;
-using PROJETO_HBSIS.BOLETIM.CONTEXT;
 using PROJETO_HBSIS.BOLETIM.MODELS;
-using PROJETO_HBSIS.BOLETIM.MODELS.ClassesAssociativas;
 using PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces;
-using PROJETO_HBSIS.BOLETIM.VALITATOR.Validation;
-using System;
-using System.Linq;
-using System.Net;
-using System.Security.Cryptography;
+
 
 namespace PROJETO_HBSIS.BOLETIM.API.Controllers
 {

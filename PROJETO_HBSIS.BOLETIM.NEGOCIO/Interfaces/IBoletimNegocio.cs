@@ -2,7 +2,6 @@
 using PROJETO_HBSIS.BOLETIM.NEGOCIO.Results;
 
 
-
 namespace PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces
 {
     public interface IBoletimNegocio
@@ -27,6 +26,10 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces
         PadraoResult<Curso> ListarCursos();
         PadraoResult<Curso> CadastrarCurso(Curso curso);
         PadraoResult<Curso> Add_Mat_em_Curso(string nomeCurso, string nomeMateria);
-        PadraoResult<Curso> Remove_Mat_em_Curso(string nomeCurso, string nomeMateria);
+
+
+        //AlunoController-----------------------------
+        PadraoResult<Aluno> ListarAlunos();
+        PadraoResult<Aluno> CadastrarAluno(Aluno aluno);
     }
 }
