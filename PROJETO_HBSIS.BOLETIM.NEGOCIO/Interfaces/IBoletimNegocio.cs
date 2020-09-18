@@ -7,9 +7,7 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces
 {
     public interface IBoletimNegocio
     {
-        object ListarCursos2();
-
-
+  
         //materiaController-------------------------
         PadraoResult<Materia> ListarMaterias();
         PadraoResult<Materia> CadastrarMateria(Materia materia);
@@ -25,6 +23,7 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces
 
 
         //CursoController-----------------------------
+
         PadraoResult<Curso> ListarCursos();
         PadraoResult<Curso> CadastrarCurso(Curso curso);
         PadraoResult<Curso> Add_Mat_em_Curso(string nomeCurso, string nomeMateria);

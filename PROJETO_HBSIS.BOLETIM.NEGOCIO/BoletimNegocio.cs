@@ -220,26 +220,27 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
 
         }
 
-        public object ListarCursos2()
+        public PadraoResult<Curso> ListarCursos()
         {
-            //var result = new PadraoResult<object>();
-            //try
-            //{
-            //    using (db)
-            //    {
-            //        result.Error = false;
-            //        result.Status = HttpStatusCode.OK;
-                    return db.Cursos.Select(s => new { CursoName = s.Nome, ListaMateria = s.Materias.Select(r => r.Materia.Nome).ToList() }).ToList();
-
-            //        return result;
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    result.Error = true;
-            //    result.Message.Add(e.Message);
-            //    return result;
-            //}
+            var result = new PadraoResult<Curso>();
+            try
+           {
+                using (db)
+                {
+                    result.Error = false;
+                    result.Message.Add("OK");
+                    result.Status = HttpStatusCode.OK;
+                    result.Data = db.Cursos.ToList();
+                    return result;
+                    //return db.Cursos.Select(s => new { CursoName = s.Nome, ListaMateria = s.Materias.Select(r => r.Materia.Nome).ToList() }).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error = true;
+                result.Message.Add(e.Message);
+                return result;
+            }
         }
 
         public PadraoResult<Materia> ListarMaterias()
@@ -349,9 +350,6 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
             }
         }
 
-        PadraoResult<Curso> IBoletimNegocio.ListarCursos()
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

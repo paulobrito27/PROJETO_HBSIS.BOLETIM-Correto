@@ -26,7 +26,7 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
         [HttpGet]
         public ActionResult Get()
         {
-            var result = rn.ListarCursos2();
+            var result = rn.ListarCursos();
             return Ok(result);
         }
 
