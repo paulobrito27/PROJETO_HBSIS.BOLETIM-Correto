@@ -36,5 +36,13 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
             var result = db.DeleteMateria(id);
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("Alterar")]
+        public ActionResult Alterar(int id, Materia materia)
+        {
+            var result = db.UpdateMateria(id, materia);
+            return Ok(result);
+        }
     }
 }

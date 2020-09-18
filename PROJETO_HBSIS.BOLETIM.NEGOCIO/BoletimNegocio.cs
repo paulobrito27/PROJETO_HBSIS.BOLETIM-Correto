@@ -111,9 +111,51 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
             }
         }
 
-        public PadraoResult<Materia> UpdateMateria(Materia materia)
+        public PadraoResult<Materia> UpdateMateria(int id, Materia matAtualizada)
         {
-            throw new NotImplementedException();
+            var validator = new MateriaValidator();
+            var valida = validator.Valida(matAtualizada);
+            var result = new PadraoResult<Materia>();
+            if (!valida.IsValid)
+            {
+                result.Error = true;
+                result.Message = valida.Erros;
+                result.Status = HttpStatusCode.BadRequest;
+                return result;
+            }
+
+            try
+            {
+                using (db)
+                {
+                    var materia = db.Materias.Where(q => q.Id == id).FirstOrDefault();
+                    if (materia == null)
+                    {
+                        result.Error = true;
+                        result.Message.Add("Id de materia não existe no nosso banco!");
+                        result.Status = HttpStatusCode.BadRequest;
+                        return result;
+                    }
+
+                    materia.Nome = matAtualizada.Nome;
+                    materia.Situacao = matAtualizada.Situacao;
+                    materia.Descricao = matAtualizada.Descricao ;
+                    materia.DataCadastro = matAtualizada.DataCadastro ;
+
+                    db.SaveChanges();
+                    result.Error = false;
+                    result.Status = HttpStatusCode.OK;
+                    result.Data = db.Materias.ToList();
+                    return result;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error = true;
+                result.Message.Add(e.Message);
+                result.Status = HttpStatusCode.BadRequest;
+                return result;
+            }
         }
     }
 }
