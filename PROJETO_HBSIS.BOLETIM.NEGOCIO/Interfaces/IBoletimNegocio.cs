@@ -9,6 +9,8 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces
     {
         PadraoResult<Materia> ListarMaterias();
         PadraoResult<Materia> CadastrarMateria(Materia materia);
+        PadraoResult<Materia> UpdateMateria(Materia materia);
+        PadraoResult<Materia> DeleteMateria(int id);
 
     }
 }

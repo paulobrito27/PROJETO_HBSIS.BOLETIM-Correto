@@ -58,11 +58,37 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
             catch (Exception e)
             {
                 result.Error = true;
-                result.Message[0] = e.Message;
+                result.Message.Add(e.Message);
+                result.Status = HttpStatusCode.BadRequest;
                 return result;
             }
         }
 
+        public PadraoResult<Materia> DeleteMateria(int id)
+        {
+            var result = new PadraoResult<Materia>();
+            try
+            {
+                using (db)
+                {
+                    var materia = db.Materias.Where(q => q.Id == id).FirstOrDefault();
+                    db.Materias.Remove(materia);
+                    db.SaveChanges();
+                    result.Error = false;
+                    result.Status = HttpStatusCode.OK;
+                    result.Data = db.Materias.ToList();
+                    return result;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error = true;
+                result.Message.Add(e.Message);
+                result.Status = HttpStatusCode.BadRequest;
+                return result;
+            }
+
+        }
 
         public PadraoResult<Materia> ListarMaterias()
         {
@@ -80,9 +106,14 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
             catch (Exception e)
             {
                 result.Error = true;
-                result.Message[0] = e.Message;
+                result.Message.Add(e.Message);
                 return result;
             }
+        }
+
+        public PadraoResult<Materia> UpdateMateria(Materia materia)
+        {
+            throw new NotImplementedException();
         }
     }
 }
