@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PROJETO_HBSIS.BOLETIM.API.Results;
-using PROJETO_HBSIS.BOLETIM.CONTEXT;
-using PROJETO_HBSIS.BOLETIM.MODELS;
-using System.Net;
+using PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces;
+
 
 namespace PROJETO_HBSIS.BOLETIM.API.Controllers
 {
@@ -10,60 +8,18 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
     [Route("Login")]
     public class LoginController : ControllerBase
     {
-        private readonly BancoContext _banco;
-        public LoginController(BancoContext db)
+        private readonly IBoletimNegocio rn;
+        public LoginController(IBoletimNegocio regraNegocio)
         {
-            _banco = db;
+            rn = regraNegocio;
         }
 
 
         [HttpPost]
-        public ActionResult Logar(Usuario usuario)
+        public ActionResult Logar(string login, string password)
         {
-            var result = new PadraoResult<Usuario>();
-
-            using (_banco)
-            {
-                //pesquisa dentro de administradores
-                foreach (var user in _banco.Administradors)
-                {
-                    if (user.Login == usuario.Login && user.Password == usuario.Password)
-                    {
-                        result.Data.Add(user);
-                        result.Error = false;
-                        result.Status = HttpStatusCode.OK;
-                        return Ok(result);
-                    }
-                }
-                //pesquisa dentro de Professores
-                foreach (var user in _banco.Professors)
-                {
-                    if (user.Login == usuario.Login && user.Password == usuario.Password)
-                    {
-                        result.Data.Add(user);
-                        result.Error = false;
-                        result.Status = HttpStatusCode.OK;
-                        return Ok(result);
-                    }
-                }
-                //pesquisa dentro de Alunos
-                foreach (var user in _banco.Alunos)
-                {
-                    if (user.Login == usuario.Login && user.Password == usuario.Password)
-                    {
-                        result.Data.Add(user);
-                        result.Error = false;
-                        result.Status = HttpStatusCode.OK;
-                        return Ok(result);
-                    }
-                }
-
-                
-                result.Error = true;
-                result.Status = HttpStatusCode.NotFound;
-                result.Message.Add ("Usuario não cadastrado");
-                return Ok(result);
-            }
+            var result = rn.LogarUsuario(login,password);
+            return Ok(result);
         }
 
     }

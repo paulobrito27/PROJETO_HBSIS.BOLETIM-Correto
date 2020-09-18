@@ -1,6 +1,6 @@
 ﻿using PROJETO_HBSIS.BOLETIM.MODELS;
 using PROJETO_HBSIS.BOLETIM.NEGOCIO.Results;
-using System.Collections.Generic;
+
 
 
 namespace PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces
@@ -11,6 +11,8 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces
         PadraoResult<Materia> CadastrarMateria(Materia materia);
         PadraoResult<Materia> UpdateMateria(int id, Materia matAtualizada);
         PadraoResult<Materia> DeleteMateria(int id);
+        void CriaAdministradorDefault();
+        PadraoResult<Usuario> LogarUsuario(string login, string password);
 
     }
 }

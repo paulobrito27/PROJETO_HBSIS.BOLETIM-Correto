@@ -64,6 +64,28 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
             }
         }
 
+        public void CriaAdministradorDefault()
+        {
+            using (db)
+            {
+                if (db.Administradors.ToList().Count < 1)
+                {
+                    Administrador adm = new Administrador()
+                    {
+                        Nome = "Admin",
+                        Sobrenome = "Adimin",
+                        Login = "admin",
+                        Password = "admin",
+                        Cpf = "000.000.000-00",
+                        TipoUsuario = MODELS.Enum.TipoUsuarioEnum.ADMINISTRADOR
+                    };
+                    db.Administradors.Add(adm);
+                    db.SaveChanges();
+                }
+            }
+        }
+
+
         public PadraoResult<Materia> DeleteMateria(int id)
         {
             var result = new PadraoResult<Materia>();
@@ -109,6 +131,40 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
                 result.Message.Add(e.Message);
                 return result;
             }
+        }
+
+        public PadraoResult<Usuario> LogarUsuario(string login, string password)
+        {
+            var result = new PadraoResult<Usuario>();
+            Usuario usuario;
+
+            using (db)
+            {
+                usuario =  db.Administradors.Where(q => q.Login == login && q.Password == password).FirstOrDefault();
+                if(usuario == null)
+                {
+                    usuario = db.Professors.Where(q => q.Login == login && q.Password == password).FirstOrDefault();
+                }
+                if (usuario == null)
+                {
+                    usuario = db.Alunos.Where(q => q.Login == login && q.Password == password).FirstOrDefault();
+                }
+                if (usuario == null)
+                {
+                    result.Error = false;
+                    result.Status = HttpStatusCode.NotFound;
+                    result.Message.Add("Usuario não cadastrado");
+                    return result;
+                }
+
+                result.Error = true;
+                result.Status = HttpStatusCode.OK;
+                result.Message.Add("ok");
+
+                result.Data.Add(usuario);
+
+            }
+            return result;
         }
 
         public PadraoResult<Materia> UpdateMateria(int id, Materia matAtualizada)
