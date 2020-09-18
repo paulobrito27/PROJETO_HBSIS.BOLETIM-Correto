@@ -1,9 +1,12 @@
-﻿using PROJETO_HBSIS.BOLETIM.CONTEXT;
+﻿using Microsoft.EntityFrameworkCore;
+using PROJETO_HBSIS.BOLETIM.CONTEXT;
 using PROJETO_HBSIS.BOLETIM.MODELS;
+using PROJETO_HBSIS.BOLETIM.MODELS.ClassesAssociativas;
 using PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces;
 using PROJETO_HBSIS.BOLETIM.NEGOCIO.Results;
 using PROJETO_HBSIS.BOLETIM.VALITATOR.Validation;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
@@ -19,6 +22,111 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
             db = banco;
         }
 
+        public PadraoResult<Curso> Add_Mat_em_Curso(string nomeCurso, string nomeMateria)
+        {
+            var result = new PadraoResult<Curso>();
+            using (db)
+            {
+                try
+                {
+                    var cursos = db.Cursos.ToList();
+                    var materias = db.Materias.ToList();
+                    var curso = cursos.Where(q => q.Nome.ToLower() == nomeCurso.ToLower()).Select(q => q).FirstOrDefault();
+                    var materia = materias.Where(q => q.Nome.ToLower() == nomeMateria.ToLower()).Select(q => q).FirstOrDefault();
+
+                    if (curso == null)
+                    {
+                        result.Error = true;
+                        result.Message.Add("Curso não encontrado");
+                        result.Status = HttpStatusCode.BadRequest;
+                        return result;
+                    }
+                    if (materia == null)
+                    {
+                        result.Error = true;
+                        result.Message.Add("Materia não encontrada");
+                        result.Status = HttpStatusCode.BadRequest;
+                        return result;
+                    }
+                    if (materia.Situacao == MODELS.Enum.StatusMateriaEnum.INATIVO)
+                    {
+                        result.Error = true;
+                        result.Message.Add("Materia com Status 'INATIVO', não pode ser adicionada ao curso!");
+                        result.Status = HttpStatusCode.BadRequest;
+                        return result;
+                    }
+
+                    curso.Materias.Add(new MateriaCurso()
+                    {
+                        Materia = materia,
+                        Curso = curso
+                    });
+                    db.SaveChanges();
+
+
+                    result.Error = false;
+                    result.Message.Add("OK");
+                    result.Status = HttpStatusCode.OK;
+                    result.Data = db.Cursos.Include(q => q.Materias).ToList();
+                    return result;
+
+                }
+                catch (Exception e)
+                {
+                    result.Error = true;
+                    result.Message.Add(e.Message);
+                    result.Status = HttpStatusCode.BadRequest;
+                    return result;
+                }
+            }
+
+
+        }
+
+        public PadraoResult<Curso> CadastrarCurso(Curso curso)
+        {
+            var validator = new CursoValidator();
+            var valida = validator.Valida(curso);
+            var result = new PadraoResult<Curso>();
+
+            if (!valida.IsValid)
+            {
+                result.Error = true;
+                result.Message = valida.Erros;
+                result.Status = HttpStatusCode.BadRequest;
+                return result;
+            }
+
+            try
+            {
+                using (db)
+                {
+                    foreach (var item in db.Cursos)
+                    {
+                        if (item.Nome == curso.Nome)
+                        {
+                            result.Error = true;
+                            result.Message.Add($"O nome {curso.Nome} já esta cadastrado");
+                            result.Status = HttpStatusCode.BadRequest;
+                            return result;
+                        }
+                    }
+
+                    db.Cursos.Add(curso);
+                    db.SaveChanges();
+                    result.Error = false;
+                    result.Status = HttpStatusCode.OK;
+                    result.Data = db.Cursos.ToList();
+                    return result;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error = true;
+                result.Message.Add(e.Message);
+                return result;
+            }
+        }
 
         public PadraoResult<Materia> CadastrarMateria(Materia materia)
         {
@@ -112,6 +220,28 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
 
         }
 
+        public object ListarCursos2()
+        {
+            //var result = new PadraoResult<object>();
+            //try
+            //{
+            //    using (db)
+            //    {
+            //        result.Error = false;
+            //        result.Status = HttpStatusCode.OK;
+                    return db.Cursos.Select(s => new { CursoName = s.Nome, ListaMateria = s.Materias.Select(r => r.Materia.Nome).ToList() }).ToList();
+
+            //        return result;
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    result.Error = true;
+            //    result.Message.Add(e.Message);
+            //    return result;
+            //}
+        }
+
         public PadraoResult<Materia> ListarMaterias()
         {
             var result = new PadraoResult<Materia>();
@@ -140,8 +270,8 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
 
             using (db)
             {
-                usuario =  db.Administradors.Where(q => q.Login == login && q.Password == password).FirstOrDefault();
-                if(usuario == null)
+                usuario = db.Administradors.Where(q => q.Login == login && q.Password == password).FirstOrDefault();
+                if (usuario == null)
                 {
                     usuario = db.Professors.Where(q => q.Login == login && q.Password == password).FirstOrDefault();
                 }
@@ -165,6 +295,11 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
 
             }
             return result;
+        }
+
+        public PadraoResult<Curso> Remove_Mat_em_Curso(string nomeCurso, string nomeMateria)
+        {
+            throw new NotImplementedException();
         }
 
         public PadraoResult<Materia> UpdateMateria(int id, Materia matAtualizada)
@@ -195,8 +330,8 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
 
                     materia.Nome = matAtualizada.Nome;
                     materia.Situacao = matAtualizada.Situacao;
-                    materia.Descricao = matAtualizada.Descricao ;
-                    materia.DataCadastro = matAtualizada.DataCadastro ;
+                    materia.Descricao = matAtualizada.Descricao;
+                    materia.DataCadastro = matAtualizada.DataCadastro;
 
                     db.SaveChanges();
                     result.Error = false;
@@ -212,6 +347,11 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
                 result.Status = HttpStatusCode.BadRequest;
                 return result;
             }
+        }
+
+        PadraoResult<Curso> IBoletimNegocio.ListarCursos()
+        {
+            throw new NotImplementedException();
         }
     }
 }

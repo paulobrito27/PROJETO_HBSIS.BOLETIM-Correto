@@ -9,16 +9,16 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
     [Route("Materias")]
     public class MateriaController : ControllerBase
     {
-        private readonly IBoletimNegocio db;
-        public MateriaController(IBoletimNegocio banco)
+        private readonly IBoletimNegocio rn;
+        public MateriaController(IBoletimNegocio regraNegocio)
         {
-            db = banco;
+            rn = regraNegocio;
         }
 
         [HttpGet]
         public ActionResult Get()
         {
-            var result = db.ListarMaterias();
+            var result = rn.ListarMaterias();
             return Ok(result);
         }
 
@@ -26,14 +26,14 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
         [Route("Cadastrar")]
         public ActionResult Cadastrar(Materia materia)
         {
-            var result = db.CadastrarMateria(materia);
+            var result = rn.CadastrarMateria(materia);
             return Ok(result);
         }
         [HttpPost]
         [Route("Deletar")]
         public ActionResult Deletar(int id)
         {
-            var result = db.DeleteMateria(id);
+            var result = rn.DeleteMateria(id);
             return Ok(result);
         }
 
@@ -41,7 +41,7 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
         [Route("Alterar")]
         public ActionResult Alterar(int id, Materia materia)
         {
-            var result = db.UpdateMateria(id, materia);
+            var result = rn.UpdateMateria(id, materia);
             return Ok(result);
         }
     }

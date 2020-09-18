@@ -2,6 +2,8 @@
 using PROJETO_HBSIS.BOLETIM.MODELS.Enum;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace PROJETO_HBSIS.BOLETIM.MODELS
 {
@@ -13,7 +15,10 @@ namespace PROJETO_HBSIS.BOLETIM.MODELS
         public DateTime DataCadastro { get; set; }
         public StatusMateriaEnum Situacao { get; set; }
         public double Nota { get; set; }
-        public virtual ICollection<MateriaCurso> Cursos { get; set; } = new HashSet<MateriaCurso>();
-        public   ICollection<ProfessorMateria> Professores { get; set; } = new HashSet<ProfessorMateria>();
+
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public  virtual ICollection<MateriaCurso> Cursos { get; set; } = new HashSet<MateriaCurso>();
+        public  virtual ICollection<ProfessorMateria> Professores { get; set; } = new HashSet<ProfessorMateria>();
     }
 }

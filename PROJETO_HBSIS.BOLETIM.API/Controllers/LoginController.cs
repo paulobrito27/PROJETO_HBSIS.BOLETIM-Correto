@@ -22,5 +22,13 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
             return Ok(result);
         }
 
+        [HttpPost]
+        [Route("teste")]
+        public ActionResult Logar2(string nome, string teste, string data)
+        {
+            
+            return Ok();
+        }
+
     }
 }

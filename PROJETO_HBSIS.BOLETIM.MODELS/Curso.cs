@@ -9,7 +9,7 @@ namespace PROJETO_HBSIS.BOLETIM.MODELS
         public int Id { get; set; }
         public string Nome { get; set; }
         public StatusCursoEnum Situacao { get; set; }
-        public ICollection<Aluno> Alunos { get; set; } = new HashSet<Aluno>();
+        public virtual ICollection<Aluno> Alunos { get; set; } = new HashSet<Aluno>();
         public virtual ICollection<MateriaCurso> Materias { get; set; } = new HashSet<MateriaCurso>();
     }
 }
