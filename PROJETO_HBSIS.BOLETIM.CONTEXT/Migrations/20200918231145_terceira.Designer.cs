@@ -10,8 +10,8 @@ using PROJETO_HBSIS.BOLETIM.CONTEXT;
 namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
 {
     [DbContext(typeof(BancoContext))]
-    [Migration("20200917094643_nova")]
-    partial class nova
+    [Migration("20200918231145_terceira")]
+    partial class terceira
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -61,11 +61,11 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                     b.Property<string>("Cpf")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CursoId")
+                    b.Property<int>("CursoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdCurso")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("DataNascimento")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Login")
                         .HasColumnType("nvarchar(max)");
@@ -198,7 +198,9 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                 {
                     b.HasOne("PROJETO_HBSIS.BOLETIM.MODELS.Curso", "Curso")
                         .WithMany("Alunos")
-                        .HasForeignKey("CursoId");
+                        .HasForeignKey("CursoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PROJETO_HBSIS.BOLETIM.MODELS.ClassesAssociativas.MateriaCurso", b =>

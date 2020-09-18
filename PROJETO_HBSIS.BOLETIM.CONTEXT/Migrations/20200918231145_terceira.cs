@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
 {
-    public partial class nova : Migration
+    public partial class terceira : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -86,8 +86,8 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                     Login = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
                     TipoUsuario = table.Column<int>(nullable: false),
-                    IdCurso = table.Column<int>(nullable: false),
-                    CursoId = table.Column<int>(nullable: true)
+                    CursoId = table.Column<int>(nullable: false),
+                    DataNascimento = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,7 +97,7 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                         column: x => x.CursoId,
                         principalTable: "Cursos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

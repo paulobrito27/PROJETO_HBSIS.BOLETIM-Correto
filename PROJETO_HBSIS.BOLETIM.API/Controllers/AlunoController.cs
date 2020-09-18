@@ -30,7 +30,13 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
             return Ok(result);
         }
 
-       
+        [HttpPost]
+        [Route("Matricular")]
+        public ActionResult Matricular(int idAluno, int idCurso)
+        {
+            var result = rn.MatricularAluno(idAluno, idCurso);
+            return Ok(result);
+        }
 
     }
 }

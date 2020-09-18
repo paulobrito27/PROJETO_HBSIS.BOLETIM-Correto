@@ -97,6 +97,7 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
             }
             aluno.Cpf = validator.FormataCPF(aluno);
             validator.SenhaLoginInicial(aluno);
+            aluno.TipoUsuario = MODELS.Enum.TipoUsuarioEnum.ALUNO;
             try
             {
                 using (db)
@@ -292,7 +293,7 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
         {
             var result = new PadraoResult<Curso>();
             try
-           {
+            {
                 using (db)
                 {
                     result.Error = false;
@@ -336,34 +337,96 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
         {
             var result = new PadraoResult<Usuario>();
             Usuario usuario;
-
-            using (db)
+            try
             {
-                usuario = db.Administradors.Where(q => q.Login == login && q.Password == password).FirstOrDefault();
-                if (usuario == null)
+                using (db)
                 {
-                    usuario = db.Professors.Where(q => q.Login == login && q.Password == password).FirstOrDefault();
-                }
-                if (usuario == null)
-                {
-                    usuario = db.Alunos.Where(q => q.Login == login && q.Password == password).FirstOrDefault();
-                }
-                if (usuario == null)
-                {
+                    usuario = db.Administradors.Where(q => q.Login == login && q.Password == password).FirstOrDefault();
+                    if (usuario == null)
+                    {
+                        usuario = db.Professors.Where(q => q.Login == login && q.Password == password).FirstOrDefault();
+                    }
+                    if (usuario == null)
+                    {
+                        usuario = db.Alunos.Where(q => q.Login == login && q.Password == password).FirstOrDefault();
+                    }
+                    if (usuario == null)
+                    {
+                        result.Error = true;
+                        result.Status = HttpStatusCode.NotFound;
+                        result.Message.Add("Usuario não cadastrado");
+                        return result;
+                    }
+
                     result.Error = false;
-                    result.Status = HttpStatusCode.NotFound;
-                    result.Message.Add("Usuario não cadastrado");
-                    return result;
+                    result.Status = HttpStatusCode.OK;
+                    result.Message.Add("ok");
+
+                    result.Data.Add(usuario);
+
                 }
-
+                return result;
+            }
+            catch (Exception e)
+            {
                 result.Error = true;
-                result.Status = HttpStatusCode.OK;
-                result.Message.Add("ok");
-
-                result.Data.Add(usuario);
+                result.Status = HttpStatusCode.NotFound;
+                result.Message.Add(e.Message);
+                return result;
 
             }
-            return result;
+        }
+
+        public PadraoResult<Aluno> MatricularAluno(int idAluno, int idCurso)
+        {
+            var result = new PadraoResult<Aluno>();
+
+            try
+            {
+                using (db)
+                {
+                    var aluno = db.Alunos.Where(q => q.Id == idAluno).FirstOrDefault();
+                    var curso = db.Cursos.Where(q => q.Id == idCurso).FirstOrDefault();
+                    if (aluno == null)
+                    {
+                        result.Error = false;
+                        result.Status = HttpStatusCode.NotFound;
+                        result.Message.Add("Id aluno não cadastrado");
+                        return result;
+                    }
+                    if (curso == null)
+                    {
+                        result.Error = false;
+                        result.Status = HttpStatusCode.NotFound;
+                        result.Message.Add("Id Curso não cadastrado!");
+                        return result;
+                    }
+                    if (curso.Situacao == MODELS.Enum.StatusCursoEnum.CANCELADO || curso.Situacao == MODELS.Enum.StatusCursoEnum.PREVISTO)
+                    {
+                        result.Error = false;
+                        result.Status = HttpStatusCode.NotFound;
+                        result.Message.Add("Curso não esta ativo!");
+                        return result;
+                    }
+                    
+                    curso.Alunos.Add(aluno);
+                    db.SaveChanges();
+
+                    result.Error = false;
+                    result.Status = HttpStatusCode.OK;
+                    result.Message.Add("ok");
+                    result.Data.Add(db.Alunos.Where(q => q.Id == idAluno).FirstOrDefault());
+                }
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                result.Error = true;
+                result.Status = HttpStatusCode.NotFound;
+                result.Message.Add(e.Message);
+                return result;
+            }
         }
 
         public PadraoResult<Curso> Remove_Mat_em_Curso(string nomeCurso, string nomeMateria)
@@ -418,6 +481,6 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
             }
         }
 
-       
+
     }
 }

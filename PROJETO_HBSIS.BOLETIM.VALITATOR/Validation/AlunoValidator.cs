@@ -102,7 +102,6 @@ namespace PROJETO_HBSIS.BOLETIM.VALITATOR.Validation
         {
             aluno.Login = (aluno.Nome + aluno.DataNascimento.Year.ToString() );
             aluno.Password = (aluno.Nome + aluno.Cpf.Substring(0, 3));
-            aluno.TipoUsuario = MODELS.Enum.TipoUsuarioEnum.ALUNO;
         }
     }
 }
