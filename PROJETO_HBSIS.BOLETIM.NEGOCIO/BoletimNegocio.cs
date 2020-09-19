@@ -8,6 +8,7 @@ using PROJETO_HBSIS.BOLETIM.VALITATOR.Validation;
 using System;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 
 namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
 {
@@ -483,6 +484,40 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
             }
         }
 
+        public object ListarMateriasdoCurso(int idAluno)
+        {
+            var result = new PadraoResult<object>();
+            try
+            {
 
+                using (db)
+                {
+                    var aluno = db.Alunos.Where(q => q.Id == idAluno).Include(x => x.Curso).ThenInclude(y => y.Materias).ThenInclude(z=> z.Materia).FirstOrDefault();
+                    if(aluno == null)
+                    {
+                        result.Error = true;
+                        result.Status = HttpStatusCode.NotFound;
+                        result.Message.Add("Id de aluno não cadastrado");
+                        return result;
+                    }
+
+                    result.Error = false;
+                    result.Status = HttpStatusCode.OK;
+                    result.Message.Add("ok");
+                    result.Data.Add(aluno.Curso);
+                    return result;
+                    
+                    //return db.Cursos.Select(s => new { CursoName = s.Nome, ListaMateria = s.Materias.Select(r => r.Materia.Nome).ToList() }).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error = true;
+                result.Status = HttpStatusCode.NotFound;
+                result.Message.Add(e.Message);
+                return result;
+                
+            }
+        }
     }
 }

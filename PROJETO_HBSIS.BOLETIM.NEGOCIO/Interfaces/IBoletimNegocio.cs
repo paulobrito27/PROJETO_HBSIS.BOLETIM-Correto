@@ -32,5 +32,6 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces
         PadraoResult<Aluno> ListarAlunos();
         PadraoResult<Aluno> CadastrarAluno(Aluno aluno);
         PadraoResult<Aluno> MatricularAluno(int idAluno, int idCurso);
+        object ListarMateriasdoCurso(int idAluno);
     }
 }

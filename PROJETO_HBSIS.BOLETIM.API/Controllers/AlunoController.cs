@@ -38,7 +38,13 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
             return Ok(result);
         }
 
-        
+        [HttpPost]
+        [Route("MateriasDoCurso")]
+        public ActionResult ListarMateriasdoCurso(int idAluno)
+        {
+            var result =  rn.ListarMateriasdoCurso(idAluno);
+            return Ok(result);
+        }
 
     }
 }
