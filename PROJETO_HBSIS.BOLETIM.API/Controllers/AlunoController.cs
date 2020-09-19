@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PROJETO_HBSIS.BOLETIM.MODELS;
 using PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces;
-
+using System.Linq;
 
 namespace PROJETO_HBSIS.BOLETIM.API.Controllers
 {
@@ -37,6 +37,8 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
             var result = rn.MatricularAluno(idAluno, idCurso);
             return Ok(result);
         }
+
+        
 
     }
 }

@@ -276,7 +276,7 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
                     result.Error = false;
                     result.Message.Add("OK");
                     result.Status = HttpStatusCode.OK;
-                    result.Data = db.Alunos.ToList();
+                    result.Data = db.Alunos.Include(x => x.Curso).ToList();
                     return result;
                     //return db.Cursos.Select(s => new { CursoName = s.Nome, ListaMateria = s.Materias.Select(r => r.Materia.Nome).ToList() }).ToList();
                 }
@@ -409,13 +409,15 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
                         return result;
                     }
                     
-                    curso.Alunos.Add(aluno);
+                    
+                    aluno.Curso = curso;
+                    aluno.IdCurso = curso.Id;
                     db.SaveChanges();
 
                     result.Error = false;
                     result.Status = HttpStatusCode.OK;
                     result.Message.Add("ok");
-                    result.Data.Add(db.Alunos.Where(q => q.Id == idAluno).FirstOrDefault());
+                    result.Data.Add(db.Alunos.Where(q => q.Id == idAluno).Include(x=> x.Curso).FirstOrDefault());
                 }
 
                 return result;
