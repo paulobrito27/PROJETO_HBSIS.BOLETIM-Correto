@@ -10,8 +10,8 @@ using PROJETO_HBSIS.BOLETIM.CONTEXT;
 namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
 {
     [DbContext(typeof(BancoContext))]
-    [Migration("20200918231145_terceira")]
-    partial class terceira
+    [Migration("20200919131712_prima")]
+    partial class prima
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -61,11 +61,14 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                     b.Property<string>("Cpf")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CursoId")
+                    b.Property<int?>("CursoId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("IdCurso")
+                        .HasColumnType("int");
 
                     b.Property<string>("Login")
                         .HasColumnType("nvarchar(max)");
@@ -87,6 +90,24 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                     b.HasIndex("CursoId");
 
                     b.ToTable("Alunos");
+                });
+
+            modelBuilder.Entity("PROJETO_HBSIS.BOLETIM.MODELS.ClassesAssociativas.AlunoMateria", b =>
+                {
+                    b.Property<int>("AlunoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MateriaId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Nota")
+                        .HasColumnType("float");
+
+                    b.HasKey("AlunoId", "MateriaId");
+
+                    b.HasIndex("MateriaId");
+
+                    b.ToTable("AlunoMateria");
                 });
 
             modelBuilder.Entity("PROJETO_HBSIS.BOLETIM.MODELS.ClassesAssociativas.MateriaCurso", b =>
@@ -153,9 +174,6 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Nota")
-                        .HasColumnType("float");
-
                     b.Property<int>("Situacao")
                         .HasColumnType("int");
 
@@ -198,7 +216,20 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                 {
                     b.HasOne("PROJETO_HBSIS.BOLETIM.MODELS.Curso", "Curso")
                         .WithMany("Alunos")
-                        .HasForeignKey("CursoId")
+                        .HasForeignKey("CursoId");
+                });
+
+            modelBuilder.Entity("PROJETO_HBSIS.BOLETIM.MODELS.ClassesAssociativas.AlunoMateria", b =>
+                {
+                    b.HasOne("PROJETO_HBSIS.BOLETIM.MODELS.Aluno", "Aluno")
+                        .WithMany("AlunoMaterias")
+                        .HasForeignKey("AlunoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PROJETO_HBSIS.BOLETIM.MODELS.Materia", "Materia")
+                        .WithMany("AlunoMaterias")
+                        .HasForeignKey("MateriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -221,13 +252,13 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
             modelBuilder.Entity("PROJETO_HBSIS.BOLETIM.MODELS.ClassesAssociativas.ProfessorMateria", b =>
                 {
                     b.HasOne("PROJETO_HBSIS.BOLETIM.MODELS.Materia", "Materia")
-                        .WithMany("Professores")
+                        .WithMany("ProfessorMaterias")
                         .HasForeignKey("MateriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PROJETO_HBSIS.BOLETIM.MODELS.Professor", "Professor")
-                        .WithMany("Materias")
+                        .WithMany("ProfessorMaterias")
                         .HasForeignKey("ProfessorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

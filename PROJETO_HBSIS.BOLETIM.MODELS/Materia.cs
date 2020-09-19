@@ -14,11 +14,18 @@ namespace PROJETO_HBSIS.BOLETIM.MODELS
         public string Descricao { get; set; }
         public DateTime DataCadastro { get; set; }
         public StatusMateriaEnum Situacao { get; set; }
-        public double Nota { get; set; }
+        
 
         [JsonIgnore]
         [IgnoreDataMember]
         public  virtual ICollection<MateriaCurso> Cursos { get; set; } = new HashSet<MateriaCurso>();
-        public  virtual ICollection<ProfessorMateria> Professores { get; set; } = new HashSet<ProfessorMateria>();
+
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public  virtual ICollection<ProfessorMateria> ProfessorMaterias { get; set; } = new HashSet<ProfessorMateria>();
+
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual ICollection<AlunoMateria> AlunoMaterias { get; set; } = new HashSet<AlunoMateria>();
     }
 }

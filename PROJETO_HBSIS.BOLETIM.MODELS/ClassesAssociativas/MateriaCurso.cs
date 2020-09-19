@@ -8,6 +8,5 @@ namespace PROJETO_HBSIS.BOLETIM.MODELS.ClassesAssociativas
         public int CursoId { get; set; }
         public Curso Curso { get; set; }
 
-      
     }
 }

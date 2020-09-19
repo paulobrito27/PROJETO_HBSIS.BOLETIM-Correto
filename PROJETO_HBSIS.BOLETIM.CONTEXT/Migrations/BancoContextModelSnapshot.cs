@@ -90,6 +90,24 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                     b.ToTable("Alunos");
                 });
 
+            modelBuilder.Entity("PROJETO_HBSIS.BOLETIM.MODELS.ClassesAssociativas.AlunoMateria", b =>
+                {
+                    b.Property<int>("AlunoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MateriaId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Nota")
+                        .HasColumnType("float");
+
+                    b.HasKey("AlunoId", "MateriaId");
+
+                    b.HasIndex("MateriaId");
+
+                    b.ToTable("AlunoMateria");
+                });
+
             modelBuilder.Entity("PROJETO_HBSIS.BOLETIM.MODELS.ClassesAssociativas.MateriaCurso", b =>
                 {
                     b.Property<int>("CursoId")
@@ -154,9 +172,6 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Nota")
-                        .HasColumnType("float");
-
                     b.Property<int>("Situacao")
                         .HasColumnType("int");
 
@@ -202,6 +217,21 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                         .HasForeignKey("CursoId");
                 });
 
+            modelBuilder.Entity("PROJETO_HBSIS.BOLETIM.MODELS.ClassesAssociativas.AlunoMateria", b =>
+                {
+                    b.HasOne("PROJETO_HBSIS.BOLETIM.MODELS.Aluno", "Aluno")
+                        .WithMany("AlunoMaterias")
+                        .HasForeignKey("AlunoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PROJETO_HBSIS.BOLETIM.MODELS.Materia", "Materia")
+                        .WithMany("AlunoMaterias")
+                        .HasForeignKey("MateriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PROJETO_HBSIS.BOLETIM.MODELS.ClassesAssociativas.MateriaCurso", b =>
                 {
                     b.HasOne("PROJETO_HBSIS.BOLETIM.MODELS.Curso", "Curso")
@@ -220,13 +250,13 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
             modelBuilder.Entity("PROJETO_HBSIS.BOLETIM.MODELS.ClassesAssociativas.ProfessorMateria", b =>
                 {
                     b.HasOne("PROJETO_HBSIS.BOLETIM.MODELS.Materia", "Materia")
-                        .WithMany("Professores")
+                        .WithMany("ProfessorMaterias")
                         .HasForeignKey("MateriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PROJETO_HBSIS.BOLETIM.MODELS.Professor", "Professor")
-                        .WithMany("Materias")
+                        .WithMany("ProfessorMaterias")
                         .HasForeignKey("ProfessorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

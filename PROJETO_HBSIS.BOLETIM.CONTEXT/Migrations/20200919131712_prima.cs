@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
 {
-    public partial class terceira : Migration
+    public partial class prima : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,8 +48,7 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                     Nome = table.Column<string>(nullable: true),
                     Descricao = table.Column<string>(nullable: true),
                     DataCadastro = table.Column<DateTime>(nullable: false),
-                    Situacao = table.Column<int>(nullable: false),
-                    Nota = table.Column<double>(nullable: false)
+                    Situacao = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,7 +85,8 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                     Login = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
                     TipoUsuario = table.Column<int>(nullable: false),
-                    CursoId = table.Column<int>(nullable: false),
+                    IdCurso = table.Column<int>(nullable: false),
+                    CursoId = table.Column<int>(nullable: true),
                     DataNascimento = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -97,7 +97,7 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                         column: x => x.CursoId,
                         principalTable: "Cursos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -148,6 +148,36 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "AlunoMateria",
+                columns: table => new
+                {
+                    MateriaId = table.Column<int>(nullable: false),
+                    AlunoId = table.Column<int>(nullable: false),
+                    Nota = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AlunoMateria", x => new { x.AlunoId, x.MateriaId });
+                    table.ForeignKey(
+                        name: "FK_AlunoMateria_Alunos_AlunoId",
+                        column: x => x.AlunoId,
+                        principalTable: "Alunos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AlunoMateria_Materias_MateriaId",
+                        column: x => x.MateriaId,
+                        principalTable: "Materias",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AlunoMateria_MateriaId",
+                table: "AlunoMateria",
+                column: "MateriaId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Alunos_CursoId",
                 table: "Alunos",
@@ -170,7 +200,7 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                 name: "Administradors");
 
             migrationBuilder.DropTable(
-                name: "Alunos");
+                name: "AlunoMateria");
 
             migrationBuilder.DropTable(
                 name: "MateriaCurso");
@@ -179,13 +209,16 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
                 name: "ProfessorMateria");
 
             migrationBuilder.DropTable(
-                name: "Cursos");
+                name: "Alunos");
 
             migrationBuilder.DropTable(
                 name: "Materias");
 
             migrationBuilder.DropTable(
                 name: "Professors");
+
+            migrationBuilder.DropTable(
+                name: "Cursos");
         }
     }
 }

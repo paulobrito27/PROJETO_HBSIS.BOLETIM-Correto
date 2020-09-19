@@ -22,8 +22,6 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT
 
 
 
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // modelBuilder.ApplyConfigurationsFromAssembly(typeof(BancoContext).Assembly);
@@ -31,6 +29,7 @@ namespace PROJETO_HBSIS.BOLETIM.CONTEXT
             //Definindo foreginKey muitos pra muitos
             modelBuilder.Entity<MateriaCurso>().HasKey(sc => new { sc.CursoId, sc.MateriaId });
             modelBuilder.Entity<ProfessorMateria>().HasKey(sc => new { sc.ProfessorId, sc.MateriaId });
+            modelBuilder.Entity<AlunoMateria>().HasKey(sc => new { sc.AlunoId, sc.MateriaId });
 
         }
         public DbSet<Aluno> Alunos { get; set; }

@@ -8,7 +8,7 @@ namespace PROJETO_HBSIS.BOLETIM.MODELS
     public class Professor : Usuario
     {
 
-        public ICollection<ProfessorMateria> Materias { get; set; } = new HashSet<ProfessorMateria>();
+        public ICollection<ProfessorMateria> ProfessorMaterias { get; set; } = new HashSet<ProfessorMateria>();
 
     }
 }
