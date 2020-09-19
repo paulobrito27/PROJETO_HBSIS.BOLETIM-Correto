@@ -8,7 +8,7 @@ using PROJETO_HBSIS.BOLETIM.VALITATOR.Validation;
 using System;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
+
 
 namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
 {
@@ -409,8 +409,8 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
                         result.Message.Add("Curso não esta ativo!");
                         return result;
                     }
-                    
-                    
+
+
                     aluno.Curso = curso;
                     aluno.IdCurso = curso.Id;
                     db.SaveChanges();
@@ -418,7 +418,7 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
                     result.Error = false;
                     result.Status = HttpStatusCode.OK;
                     result.Message.Add("ok");
-                    result.Data.Add(db.Alunos.Where(q => q.Id == idAluno).Include(x=> x.Curso).FirstOrDefault());
+                    result.Data.Add(db.Alunos.Where(q => q.Id == idAluno).Include(x => x.Curso).FirstOrDefault());
                 }
 
                 return result;
@@ -492,8 +492,8 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
 
                 using (db)
                 {
-                    var aluno = db.Alunos.Where(q => q.Id == idAluno).Include(x => x.Curso).ThenInclude(y => y.Materias).ThenInclude(z=> z.Materia).FirstOrDefault();
-                    if(aluno == null)
+                    var aluno = db.Alunos.Where(q => q.Id == idAluno).Include(x => x.Curso).ThenInclude(y => y.Materias).ThenInclude(z => z.Materia).FirstOrDefault();
+                    if (aluno == null)
                     {
                         result.Error = true;
                         result.Status = HttpStatusCode.NotFound;
@@ -506,7 +506,7 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
                     result.Message.Add("ok");
                     result.Data.Add(aluno.Curso);
                     return result;
-                    
+
                     //return db.Cursos.Select(s => new { CursoName = s.Nome, ListaMateria = s.Materias.Select(r => r.Materia.Nome).ToList() }).ToList();
                 }
             }
@@ -516,8 +516,66 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
                 result.Status = HttpStatusCode.NotFound;
                 result.Message.Add(e.Message);
                 return result;
-                
+
             }
         }
+
+        public PadraoResult<Aluno> MatricularAlunoEmMateria(int idAluno, int idMateria)
+        {
+            var result = new PadraoResult<Aluno>();
+
+            try
+            {
+                using (db)
+                {
+                    var aluno = db.Alunos.Where(q => q.Id == idAluno).Include(x => x.Curso).FirstOrDefault();
+                    Materia materia = db.Materias.Where(q => q.Id == idMateria).Include(x => x.Cursos).FirstOrDefault();
+                    if (aluno == null)
+                    {
+                        result.Error = true;
+                        result.Status = HttpStatusCode.NotFound;
+                        result.Message.Add("Id aluno não cadastrado");
+                        return result;
+                    }
+                    if (materia == null)
+                    {
+                        result.Error = true;
+                        result.Status = HttpStatusCode.NotFound;
+                        result.Message.Add("Id Materia não cadastrado!");
+                        return result;
+                    }
+                    var encontrou = materia.Cursos.Where(x => x.CursoId == aluno.IdCurso).FirstOrDefault();
+                    if (encontrou == null)
+                    {
+                        result.Error = true;
+                        result.Status = HttpStatusCode.NotFound;
+                        result.Message.Add($"Materia {materia.Nome} não pertence a grade do curso de {aluno.Curso.Nome}");
+                        return result;
+                    }
+
+                    aluno.AlunoMaterias.Add(new AlunoMateria()
+                    {
+                        Materia = materia,
+                        Aluno = aluno
+                    });
+                    db.SaveChanges();
+
+                    result.Error = false;
+                    result.Status = HttpStatusCode.OK;
+                    result.Message.Add("ok");
+                    result.Data.Add(aluno);
+                    return result;
+                }
+            }
+            catch(Exception e)
+            {
+                result.Error = true;
+                result.Status = HttpStatusCode.NotFound;
+                result.Message.Add(e.Message);
+                return result;
+            }
+
+        }
+
     }
 }

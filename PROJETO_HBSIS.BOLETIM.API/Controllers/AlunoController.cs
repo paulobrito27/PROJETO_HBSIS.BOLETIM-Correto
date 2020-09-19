@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PROJETO_HBSIS.BOLETIM.MODELS;
 using PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces;
-using System.Linq;
+
 
 namespace PROJETO_HBSIS.BOLETIM.API.Controllers
 {
@@ -31,7 +31,7 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
         }
 
         [HttpPost]
-        [Route("Matricular")]
+        [Route("MatricularAlunoEmCurso")]
         public ActionResult Matricular(int idAluno, int idCurso)
         {
             var result = rn.MatricularAluno(idAluno, idCurso);
@@ -39,10 +39,18 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
         }
 
         [HttpPost]
-        [Route("MateriasDoCurso")]
+        [Route("GradeMateriaCurso")]
         public ActionResult ListarMateriasdoCurso(int idAluno)
         {
             var result =  rn.ListarMateriasdoCurso(idAluno);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("MatricularAlunoEmMateria")]
+        public ActionResult MatricularAlunoEmMateria(int idAluno, int idMateria)
+        {
+            var result = rn.MatricularAlunoEmMateria(idAluno, idMateria);
             return Ok(result);
         }
 
