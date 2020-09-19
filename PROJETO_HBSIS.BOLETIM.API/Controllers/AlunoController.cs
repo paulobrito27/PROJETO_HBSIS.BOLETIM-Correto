@@ -54,5 +54,13 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
             return Ok(result);
         }
 
+
+        [HttpPost]
+        [Route("AtribuirNotaAluno")]
+        public ActionResult AtribuirNotaAluno(int idAluno, int idMateria, double nota)
+        {
+            var result = rn.AtribuirNotaEmMateria(idAluno, idMateria, nota);
+            return Ok(result);
+        }
     }
 }

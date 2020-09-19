@@ -577,5 +577,57 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
 
         }
 
+        public PadraoResult<AlunoMateria> AtribuirNotaEmMateria(int idAluno, int idMateria, double nota)
+        {
+            var result = new PadraoResult<AlunoMateria>();
+            if(nota > 100 || nota < 0)
+            {
+                result.Error = true;
+                result.Status = HttpStatusCode.NotFound;
+                result.Message.Add($"Valor de {nota} não é válido para ser atribuído a nota");
+                return result;
+            }
+
+            try
+            {
+                using (db)
+                {
+                    Aluno aluno = db.Alunos.Where(q => q.Id == idAluno).Include(x => x.AlunoMaterias).ThenInclude(z=> z.Materia).FirstOrDefault();
+                    
+                    if (aluno == null)
+                    {
+                        result.Error = true;
+                        result.Status = HttpStatusCode.NotFound;
+                        result.Message.Add($"Id {idAluno} do aluno não cadastrado");
+                        return result;
+                    }
+
+                    var alunoMateria = aluno.AlunoMaterias.Where(q => q.MateriaId == idMateria).FirstOrDefault();
+                    if(alunoMateria == null)
+                    {
+                        result.Error = true;
+                        result.Status = HttpStatusCode.NotFound;
+                        result.Message.Add($"Aluno id{idAluno} não está matriculado na materia id {idMateria}");
+                        return result;
+                    }
+
+                    alunoMateria.Nota = nota;
+                    db.SaveChanges();
+
+                    result.Error = false;
+                    result.Status = HttpStatusCode.OK;
+                    result.Message.Add("ok");
+                    result.Data = aluno.AlunoMaterias.Where(q=> q.AlunoId == idAluno).ToList();
+                    return result;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error = true;
+                result.Status = HttpStatusCode.NotFound;
+                result.Message.Add(e.Message);
+                return result;
+            }
+        }
     }
 }

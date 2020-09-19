@@ -1,4 +1,5 @@
 ﻿using PROJETO_HBSIS.BOLETIM.MODELS;
+using PROJETO_HBSIS.BOLETIM.MODELS.ClassesAssociativas;
 using PROJETO_HBSIS.BOLETIM.NEGOCIO.Results;
 
 
@@ -34,5 +35,7 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces
         PadraoResult<Aluno> MatricularAluno(int idAluno, int idCurso);
         object ListarMateriasdoCurso(int idAluno);
         PadraoResult<Aluno> MatricularAlunoEmMateria(int idAluno, int idMateria);
+        PadraoResult<AlunoMateria> AtribuirNotaEmMateria(int idAluno, int idMateria, double nota);
+
     }
 }
