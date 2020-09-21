@@ -486,7 +486,7 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
 
         public object ListarMateriasdoCurso(int idAluno)
         {
-            var result = new PadraoResult<object>();
+            var result = new PadraoResult<MateriaCurso>();
             try
             {
 
@@ -504,7 +504,7 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
                     result.Error = false;
                     result.Status = HttpStatusCode.OK;
                     result.Message.Add("ok");
-                    result.Data.Add(aluno.Curso);
+                    result.Data = aluno.Curso.Materias.ToList();
                     return result;
 
                     //return db.Cursos.Select(s => new { CursoName = s.Nome, ListaMateria = s.Materias.Select(r => r.Materia.Nome).ToList() }).ToList();

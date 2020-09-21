@@ -48,9 +48,9 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
 
         [HttpPost]
         [Route("MatricularAlunoEmMateria")]
-        public ActionResult MatricularAlunoEmMateria(int idAluno, int idMateria)
+        public ActionResult MatricularAlunoEmMateria((int,int) itens)
         {
-            var result = rn.MatricularAlunoEmMateria(idAluno, idMateria);
+            var result = rn.MatricularAlunoEmMateria(itens.Item1, itens.Item2);
             return Ok(result);
         }
 
