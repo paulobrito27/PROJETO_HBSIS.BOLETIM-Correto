@@ -31,17 +31,18 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
         }
         [HttpPost]
         [Route("Deletar")]
-        public ActionResult Deletar(int id)
+        public ActionResult Deletar(Materia materia)
         {
+            int id = materia.Id;
             var result = rn.DeleteMateria(id);
             return Ok(result);
         }
 
         [HttpPost]
         [Route("Alterar")]
-        public ActionResult Alterar(int id, Materia materia)
+        public ActionResult Alterar(Materia materia)
         {
-            var result = rn.UpdateMateria(id, materia);
+            var result = rn.UpdateMateria(materia.Id, materia);
             return Ok(result);
         }
     }
