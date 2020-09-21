@@ -37,6 +37,12 @@ namespace PROJETO_HBSIS.BOLETIM.VALITATOR.Validation
                 validador.Erros.Add("Campo descrição não pode estar vazio!");
                 return validador;
             }
+            if (_materia.Descricao.Length < 1)
+            {
+                validador.IsValid = false;
+                validador.Erros.Add("Campo descrição não pode estar vazio!");
+                return validador;
+            }
             if (ValidaSoLetras(_materia))
             {
                 validador.IsValid = false;
