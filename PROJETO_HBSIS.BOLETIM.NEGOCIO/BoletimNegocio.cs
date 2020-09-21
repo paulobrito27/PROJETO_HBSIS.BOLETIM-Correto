@@ -118,7 +118,7 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
                     db.SaveChanges();
                     result.Error = false;
                     result.Status = HttpStatusCode.OK;
-                    result.Data = db.Alunos.ToList();
+                    result.Data.Add(aluno);
                     return result;
                 }
             }
