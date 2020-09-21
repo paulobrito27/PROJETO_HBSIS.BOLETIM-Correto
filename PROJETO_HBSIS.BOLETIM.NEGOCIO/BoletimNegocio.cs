@@ -390,21 +390,21 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
                     var curso = db.Cursos.Where(q => q.Id == idCurso).FirstOrDefault();
                     if (aluno == null)
                     {
-                        result.Error = false;
+                        result.Error = true;
                         result.Status = HttpStatusCode.NotFound;
                         result.Message.Add("Id aluno não cadastrado");
                         return result;
                     }
                     if (curso == null)
                     {
-                        result.Error = false;
+                        result.Error = true;
                         result.Status = HttpStatusCode.NotFound;
                         result.Message.Add("Id Curso não cadastrado!");
                         return result;
                     }
                     if (curso.Situacao == MODELS.Enum.StatusCursoEnum.CANCELADO || curso.Situacao == MODELS.Enum.StatusCursoEnum.PREVISTO)
                     {
-                        result.Error = false;
+                        result.Error = true;
                         result.Status = HttpStatusCode.NotFound;
                         result.Message.Add("Curso não esta ativo!");
                         return result;
