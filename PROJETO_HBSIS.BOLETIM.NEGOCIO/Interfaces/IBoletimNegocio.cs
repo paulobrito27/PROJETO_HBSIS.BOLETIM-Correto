@@ -36,6 +36,7 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces
         object ListarMateriasdoCurso(int idAluno);
         PadraoResult<Aluno> MatricularAlunoEmMateria(int idAluno, int idMateria);
         PadraoResult<AlunoMateria> AtribuirNotaEmMateria(int idAluno, int idMateria, double nota);
+        PadraoResult<AlunoMateria> ListarNotaAluno(int idAluno);
 
     }
 }

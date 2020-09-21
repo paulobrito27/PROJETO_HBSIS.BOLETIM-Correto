@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PROJETO_HBSIS.BOLETIM.MODELS;
 using PROJETO_HBSIS.BOLETIM.NEGOCIO.Interfaces;
 
 
@@ -12,23 +13,21 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
         public LoginController(IBoletimNegocio regraNegocio)
         {
             rn = regraNegocio;
+            
         }
 
 
         [HttpPost]
-        public ActionResult Logar(string login, string password)
+        public ActionResult Logar(Usuario usuario)
         {
+
+            var login = usuario.Login;
+            var password = usuario.Password;
             var result = rn.LogarUsuario(login,password);
             return Ok(result);
         }
 
-        [HttpPost]
-        [Route("teste")]
-        public ActionResult Logar2(string nome, string teste, string data)
-        {
-            
-            return Ok();
-        }
+        
 
     }
 }

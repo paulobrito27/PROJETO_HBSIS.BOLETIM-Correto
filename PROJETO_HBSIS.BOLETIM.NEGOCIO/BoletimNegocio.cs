@@ -629,5 +629,40 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
                 return result;
             }
         }
+
+        public PadraoResult<AlunoMateria> ListarNotaAluno(int idAluno)
+        {
+            var result = new PadraoResult<AlunoMateria>();
+           
+
+            try
+            {
+                using (db)
+                {
+                    Aluno aluno = db.Alunos.Where(q => q.Id == idAluno).Include(x => x.AlunoMaterias).ThenInclude(z => z.Materia).FirstOrDefault();
+
+                    if (aluno == null)
+                    {
+                        result.Error = true;
+                        result.Status = HttpStatusCode.NotFound;
+                        result.Message.Add($"Id {idAluno} do aluno não cadastrado");
+                        return result;
+                    }
+
+                    result.Error = false;
+                    result.Status = HttpStatusCode.OK;
+                    result.Message.Add("ok");
+                    result.Data = aluno.AlunoMaterias.Where(q => q.AlunoId == idAluno).ToList();
+                    return result;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error = true;
+                result.Status = HttpStatusCode.NotFound;
+                result.Message.Add(e.Message);
+                return result;
+            }
+        }
     }
 }
