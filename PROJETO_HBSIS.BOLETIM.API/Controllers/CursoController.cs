@@ -24,9 +24,9 @@ namespace PROJETO_HBSIS.BOLETIM.API.Controllers
 
         [HttpPost]
         [Route("AddMateria")]
-        public ActionResult AdicionarMaterias(string nome_curso, string nome_materia)
+        public ActionResult AdicionarMaterias((string,string) dados)
         {
-            var result = rn.Add_Mat_em_Curso(nome_curso, nome_materia);
+            var result = rn.Add_Mat_em_Curso(dados.Item1, dados.Item2);
             return Ok(result);
         }
 
