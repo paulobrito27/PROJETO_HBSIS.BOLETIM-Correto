@@ -342,6 +342,32 @@ namespace PROJETO_HBSIS.BOLETIM.NEGOCIO
             {
                 using (db)
                 {
+                    //=======================================================================
+                    //cria administrador e professor padrao
+                    var lista = db.Administradors.ToList();
+                    if(lista.Count == 0)
+                    {
+                        Administrador adm = new Administrador()
+                        {
+                            Login = "admin",
+                            Password = "admin",
+                            TipoUsuario = MODELS.Enum.TipoUsuarioEnum.ADMINISTRADOR
+                        };
+
+                        Professor prof = new Professor()
+                        {
+                            Login = "prof",
+                            Password = "prof",
+                            TipoUsuario = MODELS.Enum.TipoUsuarioEnum.PROFESSOR
+                        };
+
+                        db.Administradors.Add(adm);
+                        db.Professors.Add(prof);
+                        db.SaveChanges();
+                    }
+                    //=======================================================================
+
+
                     usuario = db.Administradors.Where(q => q.Login == login && q.Password == password).FirstOrDefault();
                     if (usuario == null)
                     {

@@ -10,8 +10,8 @@ using PROJETO_HBSIS.BOLETIM.CONTEXT;
 namespace PROJETO_HBSIS.BOLETIM.CONTEXT.Migrations
 {
     [DbContext(typeof(BancoContext))]
-    [Migration("20200919131712_prima")]
-    partial class prima
+    [Migration("20200922003039_primeira")]
+    partial class primeira
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
