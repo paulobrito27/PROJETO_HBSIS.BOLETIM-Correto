@@ -41,10 +41,16 @@ namespace PROJETO_HBSIS.BOLETIM.VALITATOR.Validation
                 validador.Erros.Add("Campo sobrenome não pode estar vazio!");
                 return validador;
             }
+            if (aluno.Sobrenome == "")
+            {
+                validador.IsValid = false;
+                validador.Erros.Add("Campo sobrenome não pode estar vazio!");
+                return validador;
+            }
 
 
             //Valida Data nascimento
-            if ((aluno.DataNascimento.Year > DateTime.Parse("2002-01-01T00:00:00").Year) ||  (aluno.DataNascimento.Year == DateTime.Parse("0001-01-01T00:00:00").Year))
+            if ((aluno.DataNascimento.Year > DateTime.Parse("2002-01-01T00:00:00").Year) ||  (aluno.DataNascimento.Year == DateTime.Parse("0001-01-01T00:00:00").Year) )
             {
                 validador.IsValid = false;
                 validador.Erros.Add("Data de nascimento não pode ser nula e nem superior a 01/01/2002!");
